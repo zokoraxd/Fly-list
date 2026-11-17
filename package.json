@@ -1,0 +1,44 @@
+{
+  "name": "fly-list",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
+    "daisyui": "^4.12.14",
+    "maplibre-gl": "^6.18.0",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitest/coverage-v8": "^5.0.5",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.12.0",
+    "globals": "^17.13.0",
+    "postcss": "^8.4.49",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^3.4.15",
+    "vite": "^7.3.7",
+    "vitest": "^5.0.5"
+  },
+  "description": "Travel to-do planner with a single natural-language input: destinations, dates, live weather, Wikipedia guides and a route map.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

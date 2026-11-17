@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fly-List — Smart Travel Planner</title>
+    <meta
+      name="description"
+      content="A travel to-do list with a single natural-language input. Mention a city and a date and Fly-List attaches live weather, a travel guide and a map pin."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#eef2ee" />
+    <meta property="og:title" content="Fly-List — Smart Travel Planner" />
+    <meta property="og:description" content="Type “Flight to Tokyo next Friday” and get live weather, a travel guide and a map pin automatically." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      (function () {
+        try {
+          var saved = localStorage.getItem('fly_list_theme');
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+          var locale = localStorage.getItem('fly_list_locale') || (navigator.language || '').toLowerCase().slice(0, 2);
+          if (locale === 'ar') {
+            document.documentElement.lang = 'ar';
+            document.documentElement.dir = 'rtl';
+          }
+        } catch (e) {
+          /* storage unavailable */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

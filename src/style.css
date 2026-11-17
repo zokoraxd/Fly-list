@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Route line and trip dates: the chart's magenta, brighter on the night chart. */
+    --route: #a8286f;
+  }
+  [data-theme='dark'] {
+    --route: #ea92bf;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-base-200 text-base-content antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Keep focus rings visible for keyboard users without flashing them on mouse clicks. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-base-100;
+  }
+
+  /* Counters, dates and temperatures line up. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /*
+   * Continuous (squircle) corners where the browser supports them, plain rounded
+   * corners elsewhere. Squircle corners read smaller, so the supported radius is larger.
+   */
+  .sq-sm {
+    border-radius: 0.625rem;
+  }
+  .sq-md {
+    border-radius: 0.875rem;
+  }
+  .sq-lg {
+    border-radius: 1.25rem;
+  }
+  @supports (corner-shape: squircle) {
+    .sq-sm {
+      border-radius: 0.875rem;
+      corner-shape: squircle;
+    }
+    .sq-md {
+      border-radius: 1.25rem;
+      corner-shape: squircle;
+    }
+    .sq-lg {
+      border-radius: 1.75rem;
+      corner-shape: squircle;
+    }
+  }
+
+  .surface {
+    @apply bg-base-100 border border-base-300/70;
+  }
+
+  /* Smaller of the two: 44px touch target on phones, 36px with a mouse. */
+  .icon-btn {
+    @apply inline-flex size-11 shrink-0 items-center justify-center rounded-xl text-base-content/70 transition-colors sm:size-9;
+  }
+  .icon-btn:hover {
+    @apply bg-base-200 text-base-content;
+  }
+
+  /* Grows the tap area to about 44px without changing layout. */
+  .hit-slop {
+    position: relative;
+  }
+  .hit-slop::after {
+    content: '';
+    position: absolute;
+    inset: -0.65rem -0.25rem;
+  }
+
+  .chip {
+    @apply inline-flex max-w-full items-center gap-1.5 rounded-full bg-base-200 px-2.5 py-1 text-xs font-medium text-base-content/80;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
