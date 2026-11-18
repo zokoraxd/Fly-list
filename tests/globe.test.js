@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { distanceKm, formatCoordinates, greatCircle, wrapLongitude } from '../src/utils/geo.js';
+import { distanceKm, formatCoordinates, greatCircle, latLonToVector3, vector3ToLatLon, wrapLongitude } from '../src/utils/geo.js';
 import { localizedCountry, localizedName } from '../src/utils/placeName.js';
 import { parseReverseGeocode } from '../src/services/travelApi.js';
 import { normalizeDestination } from '../src/store/storage.js';
@@ -44,6 +44,23 @@ describe('geo helpers', () => {
 
   it('returns a single point when both ends are the same', () => {
     expect(greatCircle([10, 20], [10, 20])).toEqual([[20, 10]]);
+  });
+
+  it('round-trips lat/lon through 3D sphere coordinates', () => {
+    const cases = [
+      [0, 0],
+      [35.6762, 139.6503],
+      [48.8566, 2.3522],
+      [-33.8688, 151.2093],
+      [40.7128, -74.006],
+    ];
+    for (const [lat, lon] of cases) {
+      const [x, y, z] = latLonToVector3(lat, lon, 2);
+      expect(Math.hypot(x, y, z)).toBeCloseTo(2, 5);
+      const back = vector3ToLatLon(x, y, z);
+      expect(back.lat).toBeCloseTo(lat, 4);
+      expect(back.lon).toBeCloseTo(lon, 4);
+    }
   });
 });
 

@@ -4,11 +4,12 @@
 
 @layer base {
   :root {
-    /* Route line and trip dates: the chart's magenta, brighter on the night chart. */
     --route: #a8286f;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
   [data-theme='dark'] {
-    --route: #ea92bf;
+    --route: #f472b6;
   }
 
   html {
@@ -20,22 +21,39 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Keep focus rings visible for keyboard users without flashing them on mouse clicks. */
+  /* Arabic typography rules: join letters cleanly with zero tracking and generous line-height. */
+  :lang(ar) {
+    font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', system-ui, sans-serif;
+    letter-spacing: 0;
+    font-feature-settings: normal;
+  }
+  :lang(ar) body {
+    line-height: 1.75;
+  }
+  :lang(ar) :is(h1, h2, h3) {
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+  :lang(ar) :is(em, i, cite) {
+    font-style: normal;
+    font-weight: 600;
+  }
+  :lang(ar) a {
+    text-underline-offset: 0.25em;
+    text-underline-position: under;
+  }
+
+  /* Clear high-contrast keyboard focus ring across every interactive element. */
   :focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-base-100;
   }
 
-  /* Counters, dates and temperatures line up. */
   .tabular {
     font-variant-numeric: tabular-nums;
   }
 }
 
 @layer components {
-  /*
-   * Continuous (squircle) corners where the browser supports them, plain rounded
-   * corners elsewhere. Squircle corners read smaller, so the supported radius is larger.
-   */
   .sq-sm {
     border-radius: 0.625rem;
   }
@@ -43,30 +61,34 @@
     border-radius: 0.875rem;
   }
   .sq-lg {
-    border-radius: 1.25rem;
-  }
-  @supports (corner-shape: squircle) {
-    .sq-sm {
-      border-radius: 0.875rem;
-      corner-shape: squircle;
-    }
-    .sq-md {
-      border-radius: 1.25rem;
-      corner-shape: squircle;
-    }
-    .sq-lg {
-      border-radius: 1.75rem;
-      corner-shape: squircle;
-    }
+    border-radius: 1.125rem;
   }
 
   .surface {
-    @apply bg-base-100 border border-base-300/70;
+    @apply bg-base-100 border border-base-300/75;
   }
 
-  /* Smaller of the two: 44px touch target on phones, 36px with a mouse. */
+  .btn {
+    transition:
+      transform 150ms var(--ease-out),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  /* 44px touch target on phones, 36px with a mouse. */
   .icon-btn {
-    @apply inline-flex size-11 shrink-0 items-center justify-center rounded-xl text-base-content/70 transition-colors sm:size-9;
+    @apply inline-flex size-11 shrink-0 items-center justify-center rounded-xl text-base-content/75 sm:size-9;
+    transition:
+      transform 150ms var(--ease-out),
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+  .icon-btn:active:not(:disabled) {
+    transform: scale(0.96);
   }
   .icon-btn:hover {
     @apply bg-base-200 text-base-content;
@@ -83,7 +105,7 @@
   }
 
   .chip {
-    @apply inline-flex max-w-full items-center gap-1.5 rounded-full bg-base-200 px-2.5 py-1 text-xs font-medium text-base-content/80;
+    @apply inline-flex max-w-full items-center gap-1.5 rounded-full bg-base-200 px-2.5 py-1 text-xs font-medium text-base-content/85;
   }
 }
 

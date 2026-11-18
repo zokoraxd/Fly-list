@@ -2,48 +2,62 @@
   <section aria-labelledby="smart-input-label">
     <label id="smart-input-label" for="smart-input" class="sr-only">{{ t('input.placeholder') }}</label>
     <form
-      class="surface sq-lg flex items-center gap-2 p-2 ps-4 shadow-sm transition-shadow focus-within:border-primary focus-within:shadow-md"
-      :class="{ '!border-error': hasError }"
+      class="surface sq-lg flex items-center gap-2 p-2 ps-3.5 shadow-sm transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/40"
+      :class="{ '!border-error focus-within:!ring-error/40': hasError }"
       @submit.prevent="submit"
     >
+      <AppIcon name="search" :size="18" class="shrink-0 text-base-content/65" />
       <input
         id="smart-input"
         v-model="title"
         type="text"
+        dir="auto"
         autocomplete="off"
         enterkeyhint="done"
         :autocorrect="locale === 'ar' ? 'off' : 'on'"
         :spellcheck="locale !== 'ar'"
         :autocapitalize="locale === 'ar' ? 'off' : 'sentences'"
         :placeholder="t('input.placeholder')"
-        class="min-w-0 flex-1 bg-transparent py-2 text-base placeholder:text-base-content/55 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        class="min-w-0 flex-1 bg-transparent py-2 text-[15px] text-base-content placeholder:text-base-content/65 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         :aria-invalid="hasError"
         :aria-describedby="hasError ? 'smart-input-error' : 'smart-input-hint'"
         @input="hasError = false"
       />
-      <button type="submit" class="btn btn-primary sq-sm min-h-11 px-5 font-medium">
+      <button
+        v-if="preview.place"
+        type="button"
+        class="btn btn-ghost sq-sm min-h-10 shrink-0 px-3 text-xs font-semibold text-primary sm:min-h-9"
+        @click="focusPlace"
+      >
+        <AppIcon name="globe" :size="15" />
+        <span class="hidden sm:inline">{{ t('input.loadPlace') }}</span>
+      </button>
+      <button type="submit" class="btn btn-primary sq-sm min-h-10 shrink-0 px-4 text-sm font-semibold sm:min-h-9">
         {{ t('input.add') }}
       </button>
     </form>
 
-    <div class="mt-2 min-h-8 px-1 text-sm" aria-live="polite">
+    <div class="mt-2 min-h-7 px-1 text-xs leading-relaxed" aria-live="polite">
       <p v-if="hasError" id="smart-input-error" class="font-medium text-error" role="alert">{{ t('input.emptyError') }}</p>
       <div v-else-if="preview.place || preview.date" id="smart-input-hint" class="flex animate-fade-in flex-wrap items-center gap-2">
-        <span
+        <button
           v-if="preview.place"
-          class="chip !bg-primary/10 !text-primary"
+          type="button"
+          class="chip !bg-primary/15 !text-primary transition-colors hover:!bg-primary/25"
           :title="t('input.detected', { name: preview.place.name, country: preview.place.country })"
+          @click="focusPlace"
         >
           <AppIcon name="pin" :size="14" />
           <span aria-hidden="true">{{ preview.place.flag }}</span>
-          {{ preview.place.name }}<span class="font-normal opacity-70">, {{ preview.place.country }}</span>
-        </span>
-        <span v-if="preview.date" class="chip tabular !bg-accent/10 !text-accent">
+          <span>{{ preview.place.name }}</span>
+          <span class="font-normal opacity-80">, {{ preview.place.country }}</span>
+        </button>
+        <span v-if="preview.date" class="chip tabular !bg-accent/15 !text-accent">
           <AppIcon name="calendar" :size="14" />
           {{ formatDate(preview.date.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) }}
         </span>
       </div>
-      <p v-else id="smart-input-hint" class="text-base-content/65">{{ t('input.tip') }}</p>
+      <p v-else id="smart-input-hint" class="text-base-content/75">{{ t('input.tip') }}</p>
     </div>
   </section>
 </template>
@@ -55,6 +69,8 @@ import { extractPlaceFromText } from '../data/places.js';
 import { parseDateFromText } from '../utils/dateParser.js';
 import { useTasks } from '../composables/useTasks.js';
 import { useI18n } from '../i18n/index.js';
+
+const emit = defineEmits(['added', 'focus-place']);
 
 const { t, locale, formatDate } = useI18n();
 const { addTask } = useTasks();
@@ -77,8 +93,14 @@ function submit() {
     hasError.value = true;
     return;
   }
-  addTask(text);
+  const task = addTask(text);
   title.value = '';
   hasError.value = false;
+  if (task) emit('added', task);
+}
+
+function focusPlace() {
+  if (!preview.value.place) return;
+  emit('focus-place', preview.value.place);
 }
 </script>

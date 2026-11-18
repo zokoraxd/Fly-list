@@ -9,6 +9,42 @@ export function wrapLongitude(lng) {
   return ((((lng + 180) % 360) + 360) % 360) - 180;
 }
 
+const DEG2RAD = Math.PI / 180;
+
+/**
+ * Convert geographic (lat, lon) in degrees to 3D Cartesian [x, y, z] matching
+ * Three.js SphereGeometry UV mapping (North = +Y, Prime Meridian = +X).
+ *
+ * @param {number} lat
+ * @param {number} lon
+ * @param {number} [radius]
+ * @returns {[number, number, number]}
+ */
+export function latLonToVector3(lat, lon, radius = 1) {
+  const phi = (wrapLongitude(lon) + 180) * DEG2RAD;
+  const theta = (90 - lat) * DEG2RAD;
+  const sinTheta = Math.sin(theta);
+  return [-radius * Math.cos(phi) * sinTheta, radius * Math.cos(theta), radius * Math.sin(phi) * sinTheta];
+}
+
+/**
+ * Convert a 3D point on/around the globe sphere back into { lat, lon } degrees.
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @returns {{ lat: number, lon: number }}
+ */
+export function vector3ToLatLon(x, y, z) {
+  const len = Math.hypot(x, y, z) || 1;
+  const ny = Math.max(-1, Math.min(1, y / len));
+  const lat = 90 - Math.acos(ny) / DEG2RAD;
+  let phi = Math.atan2(z / len, -(x / len));
+  if (phi < 0) phi += Math.PI * 2;
+  const lon = wrapLongitude(phi / DEG2RAD - 180);
+  return { lat, lon };
+}
+
 /**
  * Format a coordinate pair in degrees, e.g. "33.32°N, 44.37°E".
  * Always Latin digits so it reads the same in English and Arabic.

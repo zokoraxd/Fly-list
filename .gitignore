@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Netlify / Vercel CLI state
+.netlify
+.vercel
+
 # Editor directories and files
 .claude/
 personal-texts/

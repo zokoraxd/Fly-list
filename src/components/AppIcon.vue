@@ -52,9 +52,12 @@ const ICONS = {
   'circle-check': { circles: [[12, 12, 8.5]], paths: ['M8.3 12.4l2.5 2.5 4.9-5.2'] },
   alert: { paths: ['M12 4l9 16H3L12 4z', 'M12 10v4M12 17h.01'] },
   plus: { paths: ['M12 5v14M5 12h14'] },
+  minus: { paths: ['M5 12h14'] },
+  orient: { circles: [[12, 12, 7]], paths: ['M12 2v3M12 19v3M2 12h3M19 12h3', 'M12 9.5v5M9.5 12h5'] },
   bag: { rects: [[4, 8, 16, 12, 3]], paths: ['M9 8V6a3 3 0 0 1 6 0v2'] },
   external: { paths: ['M14 4h6v6', 'M20 4l-9 9', 'M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10'] },
   language: { paths: ['M4 6h9', 'M8.5 4v2', 'M6 6c.5 3 2.5 5.5 5.5 6.5', 'M11 6c-.5 3-3 6-6.5 7', 'M13 20l4-9 4 9', 'M14.5 17h5'] },
+  search: { circles: [[11, 11, 6.5]], paths: ['M20 20l-4.35-4.35'] },
 };
 
 const props = defineProps({

@@ -1,7 +1,7 @@
 <template>
   <details v-if="suggestions.length > 0" class="surface sq-lg group" :open="isOpen" @toggle="isOpen = $event.target.open">
     <summary
-      class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-[inherit] px-4 py-3 text-sm font-medium [&::-webkit-details-marker]:hidden"
+      class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-[inherit] px-4 py-3 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-primary [&::-webkit-details-marker]:hidden"
     >
       <span class="flex items-center gap-2">
         <AppIcon name="bag" :size="18" class="text-primary" />
@@ -47,7 +47,7 @@ const { t, formatDate } = useI18n();
 const { state, tasks, destinations, todayIso, addTask, dismissSuggestion } = useTasks();
 
 // Open on wide screens where the side panel has room; collapsed on phones so the list stays in view.
-const isOpen = ref(typeof window !== 'undefined' && window.matchMedia?.('(min-width: 1024px)').matches);
+const isOpen = ref(typeof window !== 'undefined' && window.matchMedia?.('(min-width: 768px)').matches);
 
 const suggestions = computed(() =>
   computePackingSuggestions(tasks.value, destinations.value, {

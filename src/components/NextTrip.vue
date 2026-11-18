@@ -1,11 +1,11 @@
 <template>
-  <section class="surface sq-lg p-4" :class="trip ? '' : 'hidden lg:block'" :aria-label="t('nextTrip.title')">
-    <h2 class="mb-3 text-sm font-medium text-base-content/70">{{ t('nextTrip.title') }}</h2>
+  <section class="surface sq-lg p-4" :class="trip ? '' : 'hidden md:block'" :aria-label="t('nextTrip.title')">
+    <h2 class="mb-3 text-sm font-semibold text-base-content/80">{{ t('nextTrip.title') }}</h2>
 
     <button
       v-if="trip"
       type="button"
-      class="sq-md -m-2 flex w-[calc(100%+1rem)] flex-col gap-3 p-2 text-start transition-colors hover:bg-base-200"
+      class="sq-md -m-2 flex w-[calc(100%+1rem)] flex-col gap-3 p-2.5 text-start transition-colors hover:bg-base-200 focus-visible:ring-2 focus-visible:ring-primary"
       :aria-label="t('nextTrip.open', { name: tripName })"
       @click="emit('open-destination', trip.destination.key)"
     >
@@ -29,7 +29,7 @@
         <bdi dir="ltr">{{ weatherLine.temps }}</bdi>
       </span>
 
-      <svg class="hidden h-2 w-full text-accent lg:block" aria-hidden="true">
+      <svg class="hidden h-2 w-full text-accent md:block" aria-hidden="true">
         <line x1="2" y1="4" x2="100%" y2="4" stroke="currentColor" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" />
       </svg>
     </button>
